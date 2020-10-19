@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTrainer", "RenderTrainer\RenderTrainer.csproj", "{46E7644A-FC2C-4CEA-9480-78A23153439B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTrainerLib", "RenderTrainerLib\RenderTrainerLib.csproj", "{D55ADEFC-35A4-42EA-96E5-2B695DC29F3B}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonScripts", "PythonScripts\PythonScripts.pyproj", "{57773B95-AA37-4AE1-9C3D-52FB2D607D45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46E7644A-FC2C-4CEA-9480-78A23153439B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E7644A-FC2C-4CEA-9480-78A23153439B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E7644A-FC2C-4CEA-9480-78A23153439B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E7644A-FC2C-4CEA-9480-78A23153439B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D55ADEFC-35A4-42EA-96E5-2B695DC29F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55ADEFC-35A4-42EA-96E5-2B695DC29F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55ADEFC-35A4-42EA-96E5-2B695DC29F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55ADEFC-35A4-42EA-96E5-2B695DC29F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57773B95-AA37-4AE1-9C3D-52FB2D607D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57773B95-AA37-4AE1-9C3D-52FB2D607D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0C9519F5-62D4-4160-8E25-B7072A25CF68}
+	EndGlobalSection
+EndGlobal
