@@ -30,30 +30,38 @@ namespace RenderTrainer
             Tf.Connect();
 
 
-            string dir = Directory.GetDirectories(workDir, "Checkpoint_*").OrderByDescending(i => i).FirstOrDefault();
+            string dir = Directory.GetFiles(workDir, "Checkpoint_*").Where(i=>!i.Contains("epoch")).OrderByDescending(i => i).FirstOrDefault();
             if (dir != null)
+            {
                 Tf.Call("load", dir);
+                //Tf.Call("dump", "c:\\temp\\b.txt");
+            }
             else
                 Tf.Call("build_model");
+
+            
 
             Tf.Call("enable_tensorboard", tensorBoardLogs);
 
             while (true)
             {
-                for (int i = 0; i < 100; i++)
+                
+                for (int i = 0; i < 60; i++)
                 {
                     string filePath = Path.Combine(workDir, "image" + i + ".jpg");
                     blender.Call("renderImage", filePath, i % 6);
-                    index.Add((i % 6) + "|"+ filePath);
+                    index.Add((i % 6) + "|" + filePath);
                 }
+                
                 string indexFile = Path.Combine(workDir, "index.txt");
                 File.WriteAllLines(indexFile, index.ToArray());
 
                 Tf.Call("loadDataset", indexFile);
-                Tf.Call("evaluate");
+                
                 Tf.Call("fit");
-                Tf.Call("evaluate");
-                Tf.Call("save", Path.Combine(workDir, "Checkpoint_"+DateTime.Now.ToString("yyyyMMdd_HHmmss")));
+                //Tf.Call("evaluate");
+                Tf.Call("save", Path.Combine(workDir, "Checkpoint_" + DateTime.Now.ToString("yyyyMMdd_HHmmss")));
+                //Tf.Call("dump", "c:\\temp\\a.txt");
             }
         }
     }

@@ -8,6 +8,7 @@ import msgpackrpc
 import sys
 from tensorflow import keras
 
+
 IMG_HEIGHT = 224
 IMG_WIDTH = 224
 
@@ -21,7 +22,7 @@ class TrainServer(object):
 
     def loadDataset(self, path):
         lines_dataset = tf.data.TextLineDataset(path)
-        val_size = 10
+        val_size = 12
         self.train_ds = lines_dataset.skip(val_size).map(lambda i: self.process_line(i))
         self.val_ds = lines_dataset.take(val_size).map(lambda i: self.process_line(i))
         self.train_ds = self.configure_for_performance(self.train_ds)
@@ -43,19 +44,38 @@ class TrainServer(object):
         img = self.decode_img(img)
         return img, label
 
+    def dump(self,path):
+        obj=self.model.optimizer
+        f = open(path.decode(),'w')
+        for attr in dir(obj):
+          if hasattr( obj, attr ):
+           f.write( "obj.%s = %s" % (attr, getattr(obj, attr)))
+        f.close()
+
     def save(self,path):
-        self.model.save(path.decode())
+        #self.model.save(path.decode())
+        #tf.saved_model.save(self.model, path.decode())
+        keras.models.save_model(self.model,path.decode(),save_format='h5')
         f = open(path.decode()+'.epoch','w')
         f.write('{}'.format(self.epoch))
         f.close()
         print("*** saved model "+path.decode())
 
+
+        
+
     def load(self,path):
+        #self.model=tf.saved_model.load(path.decode())
         self.model=keras.models.load_model(path.decode())
+        #self.model.optimizer=tmp.optimizer;
         f = open(path.decode()+'.epoch', 'r')
         self.epoch = int(f.readline())
         f.close()
         print("*** loaded model "+path.decode())
+
+
+        
+        
 
     def configure_for_performance(self,ds):
       ds = ds.cache()
@@ -88,8 +108,10 @@ class TrainServer(object):
           keras.layers.Dense(num_classes)
         ])
 
+        opt = tf.keras.optimizers.Adam(learning_rate=0.0001)
+
         self.model.compile(
-          optimizer='adam',
+          optimizer=opt,
           loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True),
           metrics=['sparse_categorical_accuracy'])
 
@@ -101,12 +123,14 @@ class TrainServer(object):
         if(self.tensorboard_callback!=None):
             cb=[self.tensorboard_callback]
 
-        train_epochs=10
+        train_epochs=5
+
         self.model.fit(
           self.train_ds,
           validation_data=self.val_ds,shuffle=True,
-          epochs=self.epoch+train_epochs,callbacks=cb,initial_epoch=self.epoch
+          epochs=self.epoch+train_epochs,callbacks=cb,initial_epoch=self.epoch,use_multiprocessing=True
         )
+
         self.epoch=self.epoch+train_epochs
 
     def evaluate(self):
