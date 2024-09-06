@@ -45,15 +45,17 @@ namespace RenderTrainer
 
             while (true)
             {
-                
-                for (int i = 0; i < 60; i++)
+                string indexFile = Path.Combine(workDir, "index.txt");
+
+                for (int i = 0; i < 1000; i++)
                 {
                     string filePath = Path.Combine(workDir, "image" + i + ".jpg");
                     blender.Call("renderImage", filePath, i % 6);
                     index.Add((i % 6) + "|" + filePath);
+                    File.WriteAllLines(indexFile, index.ToArray());
                 }
-                
-                string indexFile = Path.Combine(workDir, "index.txt");
+                return;
+
                 File.WriteAllLines(indexFile, index.ToArray());
 
                 Tf.Call("loadDataset", indexFile);
